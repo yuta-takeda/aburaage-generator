@@ -1,0 +1,50 @@
+# lambda
+
+# Distribution / packaging
+lambda/.Python
+lambda/*.pyc
+lambda/env/
+lambda/build/
+lambda/develop-eggs/
+lambda/dist/
+lambda/downloads/
+lambda/eggs/
+lambda/.eggs/
+lambda/lib/
+lambda/lib64/
+lambda/parts/
+lambda/sdist/
+lambda/var/
+lambda/*.egg-info/
+lambda/.installed.cfg
+lambda/*.egg
+lambda/.serverless/
+lambda/aburaage-generator-layer/
+
+# Serverless directories
+lambda/.serverless
+
+
+# frontend
+
+# dependencies
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
+
+# misc
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
