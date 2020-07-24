@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AppComponent from "../components/App";
 import { useSnackbar } from "notistack";
 
-const generateImageApi = "https://azn0v951lb.execute-api.ap-northeast-1.amazonaws.com/dev/aburaage_generator/generate_image";
-const fetchRankingApi = "https://azn0v951lb.execute-api.ap-northeast-1.amazonaws.com/dev/aburaage_generator/fetch_ranking";
+const generateImageApi = ""; // input your API URL
+const fetchRankingApi = "";
 const defaultImageUrl = "https://aburaage-generator.s3-ap-northeast-1.amazonaws.com/0610e0dd001e78cce3fa9cc411f00d80.png";
 
 const App: React.FC = () => {
