@@ -24,6 +24,8 @@ lambda/aburaage-generator-layer/
 # Serverless directories
 lambda/.serverless
 
+.python-version
+
 
 # frontend
 

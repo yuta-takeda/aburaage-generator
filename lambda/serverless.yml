@@ -1,0 +1,119 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: aburaage-generator # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  deploymentBucket:
+    name: aburaage-generator
+    serverSideEncryption: AES256
+  deploymentPrefix: serverless
+  region: ap-northeast-1
+  timeout: 15
+  memorySize: 512
+
+  # you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:Query"
+        - "dynamodb:UpdateItem"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+        - "s3:GetObject"
+        - "s3:GetObjectAcl"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "translate:*"
+      Resource: "*"
+
+package:
+ exclude:
+   - fonts/**
+   - generate_layer/**
+
+functions:
+  generate_image:
+    handler: generate_image.main
+    # デプロイ成功後、コメントアウトを外して再度デプロイする
+    layers:
+      - ${cf:aburaage-generator-dev.AburaageGeneratorLambdaLayerQualifiedArn}
+    events:
+      - http:
+          path: aburaage_generator/generate_image
+          method: post
+          cors:
+            origin: "*"
+            allowCredentials: true
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Amz-Security-Token
+              - X-PINGOTHER
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Credentials
+  fetch_ranking:
+    handler: fetch_ranking.main
+    layers:
+      - ${cf:aburaage-generator-dev.AburaageGeneratorLambdaLayerQualifiedArn}
+    events:
+      - http:
+          path: aburaage_generator/fetch_ranking
+          method: get
+          cors:
+            origin: "*"
+            allowCredentials: true
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Amz-Security-Token
+              - X-PINGOTHER
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Credentials
+
+layers:
+  aburaageGenerator:
+    path: aburaage-generator-layer
+    compatibleRuntimes:
+      - python3.7
+      - python3.8
+
+resources:
+  Outputs:
+    ApiGatewayRestApiId:
+      Value:
+        Ref: ApiGatewayRestApi
+      Export:
+        Name: ${opt:stage, self:provider.stage}-ApiGatewayRestApiId
+    ApiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - ApiGatewayRestApi
+          - RootResourceId
+      Export:
+        Name: ${opt:stage, self:provider.stage}-ApiGatewayRestApiRootResourceId
